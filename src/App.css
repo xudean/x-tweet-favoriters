@@ -1,0 +1,81 @@
+#root{
+  width: 100%;
+}
+.app-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.centered-content {
+  max-width: 600px;
+  width: 100%;
+}
+
+.app-title {
+  color: #1890ff;
+  margin-bottom: 2rem !important;
+  text-align: center;
+  font-weight: 600;
+}
+
+.input-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  border: none;
+  text-align: left;
+}
+
+.result-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
+  border: none;
+  background: #f9f9f9;
+  text-align: center;
+}
+
+.input-group {
+  margin-bottom: 1.5rem;
+}
+
+.custom-input {
+  margin-top: 0.5rem;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.submit-button {
+  height: 40px;
+  border-radius: 8px;
+  font-weight: 500;
+  background: linear-gradient(90deg, #1890ff, #096dd9);
+  border: none;
+  margin-top: 1rem;
+}
+
+.result-content {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  overflow-x: auto;
+  text-align: left;
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    padding: 1rem;
+  }
+
+  .input-card, .result-card {
+    border-radius: 8px;
+  }
+
+  .centered-content {
+    max-width: 100%;
+  }
+}
