@@ -51,7 +51,7 @@ function App() {
                     </div>
 
                     <div className="input-group">
-                        <Text strong>Favoriter You Want to Check:</Text>
+                        <Text strong>Enter the screen_name to check:</Text>
                         <Input
                             value={favoriter}
                             onChange={(e) => setChannelLogin(e.target.value)}
