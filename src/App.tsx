@@ -7,7 +7,7 @@ import JsonViewer from "./component/JsonViewer.tsx";
 const { Title, Text } = Typography;
 
 function App() {
-    const [attestation, setAttestation] = useState('{"a":"a"}');
+    const [attestation, setAttestation] = useState('');
     const [favoriter, setChannelLogin] = useState('goose_eggsss');
     const [launchPage, setLaunchPage] = useState(
         'https://x.com/goose_eggsss/status/1940597194823975242/likes'
