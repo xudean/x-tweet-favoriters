@@ -1,5 +1,6 @@
 import {PrimusZKTLS} from "@primuslabs/zktls-js-sdk"
-
+import {ethers} from "ethers";
+import {abi} from "../abi/AttestationVerifier.ts";
 // Initialize parameters.
 const primusZKTLS = new PrimusZKTLS();
 
@@ -11,10 +12,21 @@ if (!appId || !appSecret) {
     alert("appId or appSecret is not set.")
     throw new Error("appId or appSecret is not set.");
 }
+const viteprivatekey = import.meta.env.VITE_PRIVATE_KEY;
+const viterpcurl = import.meta.env.VITE_RPC_URL;
+console.log("viterpcurl=", viterpcurl)
+const contractAddr = import.meta.env.VITE_CONTRACT_ADDRESS;
+const provider = new ethers.JsonRpcProvider(viterpcurl);
+const wallet = new ethers.Wallet(viteprivatekey, provider);
+console.log("wallet=", wallet.address)
 
+// Contract address
+const contract = new ethers.Contract(contractAddr, abi, wallet);
+const contractBalance: ethers.BigNumberish = await provider.getBalance(contractAddr);
+console.log(`contractAddr ${contractAddr}:${contractBalance}`);
 //just for test
 const options = {
-    env: "dev"
+    env: "production"
 }
 const initAttestaionResult = await primusZKTLS.init(appId, appSecret,options);
 console.log("primusProof initAttestaionResult=", initAttestaionResult);
@@ -23,7 +35,7 @@ export async function primusProofTest(launchPage: string, myFavoritor: string, c
     // Set TemplateID and user address.
     const attTemplateID = "fe26c3d4-f9d0-471a-828f-b1dfdf954d70";
     // ***You change address according to your needs.***
-    const userAddress = "0x7ab44DE0156925fe0c24482a2cDe48C465e47573";
+    const userAddress = wallet.address;
     // Generate attestation request.
     const request = primusZKTLS.generateRequestParams(attTemplateID, userAddress);
     const addtionParams = {
@@ -97,4 +109,20 @@ export async function primusProofTest(launchPage: string, myFavoritor: string, c
     } else {
         // If failed, define your own logic.
     }
+}
+
+export async function verifyAndClaimToken(attestation: any){
+    const balance: ethers.BigNumberish = await provider.getBalance(wallet.address);
+    console.log(`Before claim balance of ${wallet.address}: ${balance.toString()} wei`);
+    console.log(`In ETH: ${ethers.formatEther(balance)} ETH`);
+    console.log("verifyAndClaimToken attestation=", attestation)
+    const tx =await contract.verifyAndSenToken(attestation);
+    const txreceipt = await tx.wait();
+    console.log("receipt", txreceipt);
+    setTimeout(async ()=>{
+        const balanceAfter = await provider.getBalance(wallet.address);
+        console.log(`After claim balance of${wallet.address}: ${balanceAfter.toString()} wei`);
+        console.log(`In ETH: ${ethers.formatEther(balanceAfter)} ETH`);
+    }, 2000)
+
 }

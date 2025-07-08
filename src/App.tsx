@@ -1,18 +1,32 @@
-import { useState } from 'react';
+import {useState} from 'react';
 import './App.css';
-import { primusProofTest } from './script/primus';
-import { Input, Button, Card, Typography } from 'antd';
+import {primusProofTest, verifyAndClaimToken} from './script/primus';
+import {Input, Button, Card, Typography,message} from 'antd';
 import JsonViewer from "./component/JsonViewer.tsx";
+import type {NoticeType} from "antd/es/message/interface";
 
-const { Title, Text } = Typography;
+const {Title, Text} = Typography;
 
 function App() {
     const [attestation, setAttestation] = useState('');
     const [favoriter, setChannelLogin] = useState('goose_eggsss');
+    const [messageApi, contextHolder] = message.useMessage();
+
+
+    const messagefn = (type: NoticeType,message: string) => {
+        messageApi.open({
+            type: type,
+            content: message,
+        });
+    };
+
+
     const [launchPage, setLaunchPage] = useState(
         'https://x.com/goose_eggsss/status/1940597194823975242/likes'
     );
     const [isLoading, setIsLoading] = useState(false);
+
+    const [isVerifying, setIsVerifying] = useState(false);
 
     const startAttFn = async () => {
         setIsLoading(true);
@@ -34,8 +48,21 @@ function App() {
         setIsLoading(false)
     };
 
+    const submitAttestation = async () => {
+        try {
+            await verifyAndClaimToken(JSON.parse(attestation));
+            messagefn("success", "Verify failed");
+        } catch (err) {
+            console.log(err)
+            messagefn("error", "Verify failed");
+        } finally {
+            setIsVerifying(false);
+        }
+    }
+
     return (
         <div className="app-container">
+            {contextHolder}
             <div className="centered-content">
                 <Title level={2} className="app-title">Primus Demo</Title>
 
@@ -71,6 +98,10 @@ function App() {
                     </Button>
                 </Card>
 
+                {
+                    attestation && (<Button onClick={submitAttestation} loading={isVerifying} className="submit-button"
+                    >Verify And Claim</Button>)
+                }
                 {attestation && (
                     <Card className="result-card">
                         <Title level={4} style={{textAlign: 'center'}}>Attestation Result:</Title>
@@ -79,6 +110,7 @@ function App() {
                         </div>
                     </Card>
                 )}
+
             </div>
 
         </div>
