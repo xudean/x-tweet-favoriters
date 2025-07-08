@@ -38,18 +38,18 @@ export async function primusProofTest(launchPage: string, myFavoritor: string, c
                 key: "my_favoriter",
                 field: "$.data.favoriters_timeline.timeline.instructions[0].entries[*]+",
                 value: [
-                    // {
-                    //     type: "FIELD_RANGE",
-                    //     op: "STREQ",
-                    //     field: "+.content.itemContent.user_results.result.core.screen_name",
-                    //     value: myFavoritor,
-                    // }
                     {
                         type: "FIELD_RANGE",
                         op: "STREQ",
-                        field: "+.content.entryType",
-                        value: "TimelineTimelineItem",
-                    },
+                        field: "+.content.itemContent.user_results.result.core.screen_name",
+                        value: myFavoritor,
+                    }
+                    // {
+                    //     type: "FIELD_RANGE",
+                    //     op: "STREQ",
+                    //     field: "+.content.entryType",
+                    //     value: "TimelineTimelineItem",
+                    // },
                     // {
                     //     "type": "CONDITION_EXPANSION",
                     //     "op": "&",
