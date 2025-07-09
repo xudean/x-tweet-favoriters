@@ -26,6 +26,7 @@ This project has set a privateKey(anvil privateKey) for testing purposes.
 
 ```shell
 cp .env.anvil .env
+source .env
 ```
 
 ### Build
@@ -42,7 +43,7 @@ $ forge build
 
 ### Deploy
 
-*** Before deploy contract, please set your tweet url and favorite you want to verify in script/AttestationVerifier.sol#L35-36***
+*** Before deploy contract, please set your tweet url and favorite you want to verify in script/AttestationVerifier.sol#L35-36 ***
 
 ```shell
 forge script script/AttestationVerifier.s.sol:AttestationVerifierDeployer --fork-url ${RPC_URL} --private-key ${PRIVATE_KEY} --broadcast
